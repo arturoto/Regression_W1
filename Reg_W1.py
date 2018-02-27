@@ -95,3 +95,43 @@ y_14 = data.iloc[0:3760, 4:5]   # Closing prices from 01-22-1998 to 01-01-2014
     Putting that together we get X as a DataFrame = [0, 1, 2, .... N] '''
 X = pd.DataFrame(list(range(len(y_12))))
 
+
+# Part two of the lecture, No Comments
+
+
+from sklearn.linear_model import LinearRegression
+reg = LinearRegression()
+
+
+reg.fit(X, y_12)
+
+y_hat = pd.DataFrame(list(range(len(y_14))))
+# not needed
+y_hat_total = pd.DataFrame(list(range(len(y))))
+
+
+def predF(df):
+	for i, x in enumerate(df):
+		df[i] = reg.intercept_+ reg.coef_* i
+
+        
+y_hat.apply(predF)
+#Not needed
+#y_hat_total.apply(predF)
+
+print(reg.intercept_)
+print(reg.coef_)
+
+
+#plt.plot(y, color='Yellow')
+plt.plot(y_14)
+plt.plot(y_12, color='Blue')
+#plt.plot(y_hat_total, color='Green')
+plt.plot(y_hat)
+plt.show()
+
+import statsmodels.api as sm
+model = sm.OLS(y_14, y_hat).fit()
+predictions = model.predict(X) 
+print(model.summary())
+
